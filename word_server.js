@@ -3,41 +3,6 @@
 //import fs  to read and writeTOFile
 var fs = require('fs');
 
-var sisterGoldenHair = [];
-var brownEyedGirl = [];
-var peacefulEasyFeeling = [];
-var array = new Array();
-var songTextFiles = ['songs/Brown Eyed Girl.txt','songs/Sister Golden Hair.txt','songs/Peaceful Easy Feeling.txt'];
-
-var songs = {"Peaceful Easy Feeling" : peacefulEasyFeeling,
-             "Sister Golden Hair" : sisterGoldenHair,
-             "Brown Eyed Girl" : brownEyedGirl
-			 };
-
-// readFiles from songs and update songs objects
-for (let j = 0 ; j < songTextFiles.length; j++){
-  fs.readFile(songTextFiles[j], function(err, data) {
-    if(err) throw err;
-    var textContent = data.toString().split("\n");
-    var y_position =40;
-    for (i=0;i<textContent.length; i++){
-      var wordSong= textContent[i].split(" ");
-      var x_position = 0;
-      y_position+=30;
-      for (k = 0; k < wordSong.length; k++) {
-        if ( j ==0){
-          brownEyedGirl.push({word:wordSong[k], x:x_position, y:y_position});
-        }else if(j ==1){
-          sisterGoldenHair.push({word:wordSong[k], x:x_position, y:y_position});
-        }else if (j ==2){
-          peacefulEasyFeeling.push({word:wordSong[k], x:x_position, y:y_position});
-        }
-        x_position+=(wordSong.length*9);
-      }
-    }
-});
-
-}
 var http = require('http'); //need to http
 var url = require('url');  //to parse url strings
 
