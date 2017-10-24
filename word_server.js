@@ -3,7 +3,8 @@
 //import fs  to read and writeTOFile
 var fs = require('fs');
 
-
+//words that contain user input
+wordArray = [];
 
 var http = require('http'); //need to http
 var url = require('url');  //to parse url strings
@@ -39,26 +40,7 @@ var get_mime = function(filename) {
 };
 
 // get user song title
-function get_song( title){
 
- 	console.log("getting song");
-	var song_title = title;
-
-	for(song_title in songs){
-
-		if(song_title == title){
-			for(let i = 0; i < songs[title].length; i++){
-			//	console.log("this ran");
-				array[i] = songs[title][i];
-			}
-		}
-
-
-	}
-
-
-	return array;
-}
 
 function update_file(updated_array){
 
@@ -90,9 +72,17 @@ http.createServer(function (request,response){
 		   var dataObj = JSON.parse(receivedData);
            console.log('received data object: ', dataObj);
            console.log('type: ', typeof dataObj);
-		  
+
+          wordArray.push({word:dataObj.text,x:20,y:20});
+           returnObj = {};
+           returnObj.wordArray =wordArray;
+
+
+
+
+
 		   //object to return to client
-          response.writeHead(200, {'Content-Type': MIME_TYPES["text"]});  //does not work with application/json MIME
+          response.writeHead(200, {'Content-Type': MIME_TYPES['text']});  //does not work with application/json MIME
            response.end(JSON.stringify(returnObj)); //send just the JSON object
 		}
      });
