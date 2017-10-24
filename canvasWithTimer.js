@@ -4,31 +4,11 @@
 //default song: "PEACEFUL EASY FEELING"
 var words = [];
 
-var userRequestObj = {
 
-text: "",
-
-title: "",
-
-type: "",
-
-wordArray: []}; //make object to send to server
-
-var movingString = {word: "Moving",
-                    x: 100,
-					y:100,
-					xDirection: 1, //+1 for leftwards, -1 for rightwards
-					yDirection: 1, //+1 for downwards, -1 for upwards
-					stringWidth: 50, //will be updated when drawn
-					stringHeight: 24}; //assumed height based on drawing point size
 
 //indended for keyboard control
-var movingBox = {x: 50,
-                 y: 50,
-				 width: 100,
-				 height: 100};
 
-var wayPoints = []; //locations where the moving box has been
+
 
 var timer;
 
@@ -57,98 +37,40 @@ var drawCanvas = function(){
     context.fillStyle = 'white';
     context.fillRect(0,0,canvas.width,canvas.height); //erase canvas
 
-    context.font = '10pt Arial';
+    context.font = '30pt Arial';
     context.fillStyle = 'cornflowerblue';
     context.strokeStyle = 'blue';
 
-    for(var i=0; i<words.length; i++){  //note i declared as var
+    //wordbank
+    context.fillStyle = 'red';
+    context.fillRect(300,0,10,300);
+
+    context.fillRect(0,30,300,10);
+
+    context.fillStyle= 'black';
+    context.fillText("Words bank", 50,30);
+
+
+    var line_y_position=50;
+    for (let i =0; i<5; i++){
+
+      context.fillRect(310,30+line_y_position,700,10);
+
+      line_y_position+=50;
+
+    }
+
+		for(var i=0; i<words.length; i++){  //note i declared as var
 
 			var data = words[i];
-			//console.log("str: ", String(data.word).charAt(0));
-			//if (String(data.word).charAt(0) == "["){
-
-			var raw_chord = "";
-			var chord = "";
-			var temp = "";
-			var edited = "";
-			var flag = 0;
-
-			var o_flag = 0;
-			for(let j = 0; j < String(data.word).length;j++){
- 				if(String(data.word).charAt(j) == "["){
-					console.log("j: ", j);
-
-					flag = 1;
-					if(j > 0){
-
-						o_flag = 1;
-						console.log("o_flag: ", o_flag);
-					}
-
-			for(let k = j; k < String(data.word).length; k++){
-				if(data.word.charAt(k) == "]"){
-
-					raw_chord = data.word;
-					chord = raw_chord.substring(j+1, k);
-					//console.log("chord: ", chord);
-					temp = data.word;
-					temp = temp.slice(j, k);
-					edited = temp.replace(temp, '');
-					//console.log("temp: ", temp);
-				}
-			}
-
-				var opening = -1;
-				var closing = -1;
-				//var temp = "";
-
-				context.fillText(chord, data.x, data.y-15);
-				context.strokeText(chord, data.x, data.y-15);
-				context.fillText(edited, data.x, data.y);
-				context.strokeText(edited, data.x, data.y);
-
-				}
-			/*	if(o_flag == 1){
-					context.fillText(data.word, data.x, data.y);
-					context.strokeText(data.word, data.x, data.y);
-					o_flag = 0;
-				}*/
-
-			}
-
-			if(o_flag == 1 || flag == 0){
-					context.fillText(data.word, data.x, data.y);
+			context.fillText(data.word, data.x, data.y);
             context.strokeText(data.word, data.x, data.y);
-			o_flag = 0;
-			}
+
 	}
 
-//    movingString.stringWidth = context.measureText(	movingString.word).width;
-	//console.log(movingString.stringWidth);
-  //  context.fillText(movingString.word, movingString.x, movingString.y);
 
-    //draw moving box
-	/*context.fillRect(movingBox.x,
-	                 movingBox.y,
-					 movingBox.width,
-					 movingBox.height);*/
 
-	//draw moving box way points
-	for(i in wayPoints){
-		context.strokeRect(wayPoints[i].x,
-		             wayPoints[i].y,
-					 movingBox.width,
-					 movingBox.height);
-	}
-	//draw circle
-    context.beginPath();
-    context.arc(canvas.width/2, //x co-ord
-            canvas.height/2, //y co-ord
-			canvas.height/2 - 5, //radius
-			0, //start angle
-			2*Math.PI //end angle
-			);
-    context.stroke();
+
 }
 
 function handleMouseDown(e){
@@ -220,18 +142,7 @@ function handleMouseUp(e){
 //much JQuery code will go in here because the DOM will have been loaded by the time
 //this runs
 
-function handleTimer(){
-	movingString.x = (movingString.x + 5*movingString.xDirection);
-	movingString.y = (movingString.y + 5*movingString.yDirection);
 
-	//keep inbounds of canvas
-	if(movingString.x + movingString.stringWidth > canvas.width) movingString.xDirection = -1;
-	if(movingString.x < 0) movingString.xDirection = 1;
-	if(movingString.y > canvas.height) movingString.yDirection = -1;
-	if(movingString.y - movingString.stringHeight < 0) movingString.yDirection = 1;
-
-	drawCanvas()
-}
 
     //KEY CODES
 	//should clean up these hard coded key codes
@@ -298,7 +209,7 @@ function handleSubmitButton() {
     var userText = $('#userTextField').val(); //get text from user text input field
 	if(userText && userText != ''){
 	   //user text was not empty
-	//   var userRequestObj = {text: userText}; //make object to send to server
+		var userRequestObj = {text: userText}; //make object to send to server
 		userRequestObj.text = userText;
 		userRequestObj.type = "submit";
 		var userRequestJSON = JSON.stringify(userRequestObj); //make json string
@@ -313,15 +224,21 @@ function handleSubmitButton() {
 			var responseObj = JSON.parse(data);
 			songTitle = responseObj.title;
 			console.log("Song title: " + songTitle);
-			movingString.word = responseObj.text;
-			userRequestObj.title = songTitle;
+
 			//songTitle = responseObj.text;
 			//replace word array with new words if there are any
 			if(responseObj.wordArray) words = responseObj.wordArray;
 			});
-	}
 
+	}
+drawCanvas();
 }
+
+function handleDeleteButton(){
+	// the next word user choose
+	
+}
+
 
 
     function getWordPreciseLocater(aCanvasX, aCanvasY){
@@ -412,7 +329,7 @@ $(document).ready(function(){
 	$(document).keydown(handleKeyDown);
 	$(document).keyup(handleKeyUp);
 
-	timer = setInterval(handleTimer, 100);
+
     //timer.clearInterval(); //to stop
 
 	drawCanvas();
