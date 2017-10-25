@@ -17,6 +17,7 @@ var songTitle;
 
 var deltaX, deltaY; //location where mouse is pressed
 var canvas = document.getElementById('canvas1'); //our drawing canvas
+var canvas2 = document.getElementById('canvas2'); //display active users
 
 function getWordAtLocation(aCanvasX, aCanvasY){
 
@@ -32,8 +33,12 @@ function getWordAtLocation(aCanvasX, aCanvasY){
 
 var drawCanvas = function(){
 
-    var context = canvas.getContext('2d');
-
+    
+	/*TESTING PLACEHOLDER*/
+	//drawCanvas2();
+	
+	var context = canvas.getContext('2d');
+	
     context.fillStyle = 'white';
     context.fillRect(0,0,canvas.width,canvas.height); //erase canvas
 
@@ -68,11 +73,19 @@ var drawCanvas = function(){
 
 	}
 
-
-
+	/*TESTING*/
+	drawCanvas2();
 
 }
 
+var drawCanvas2 = function(){
+	
+		var context = canvas2.getContext('2d');
+		context.font = '30pt Arial';
+		context.fillStyle= 'black';
+	    context.fillText("Active users", 50, 30);
+
+}
 function handleMouseDown(e){
 
 	//get mouse location relative to canvas top left
