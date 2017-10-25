@@ -44,16 +44,24 @@
       </style>
    </head>
 
+   
+   
   <body>
     <canvas id='canvas1' class='canvas' width='800' height='300'>
       Canvas not supported
     </canvas>
-    <!--
+    
+	<canvas id='canvas2' class='canvas' width='300' height='300'>
+      Canvas not supported
+    </canvas>
+
     <form>
-    <input type = "text"  name = "userTextField"  value="" size = "60" />
-    <input type="button" name="button" value="Submit Request" onClick="handleSubmitButton(this.form)">
+    <input type = "text"  name = "userTextField"  value="" size = "30" />
+    <input type="button" name="button" value="Login" onClick="handleLoginButton()">
+	<input type="button" value="Log out" onClick="handleLogoutButton()">
+
     </form>
-    -->
+    
     <input type = "text"  id="userTextField" name = "userTextField"  value="" size = "60" />
     <input type="button" value="Submit Request" onClick="handleSubmitButton()">
 
