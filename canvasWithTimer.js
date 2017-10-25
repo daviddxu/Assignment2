@@ -1,8 +1,11 @@
 
-
 //Use javascript array of objects to represent words and their locations
 //default song: "PEACEFUL EASY FEELING"
 var words = [];
+
+var users=[];
+
+
 
 
 
@@ -17,6 +20,7 @@ var songTitle;
 
 var deltaX, deltaY; //location where mouse is pressed
 var canvas = document.getElementById('canvas1'); //our drawing canvas
+var canvas2 = document.getElementById('canvas2'); //display active users
 
 function getWordAtLocation(aCanvasX, aCanvasY){
 
@@ -32,7 +36,11 @@ function getWordAtLocation(aCanvasX, aCanvasY){
 
 var drawCanvas = function(){
 
-    var context = canvas.getContext('2d');
+
+	/*TESTING PLACEHOLDER*/
+	//drawCanvas2();
+
+	var context = canvas.getContext('2d');
 
     context.fillStyle = 'white';
     context.fillRect(0,0,canvas.width,canvas.height); //erase canvas
@@ -68,11 +76,30 @@ var drawCanvas = function(){
 
 	}
 
-
-
+	/*TESTING*/
+	drawCanvas2();
 
 }
 
+var drawCanvas2 = function(){
+
+		var context = canvas2.getContext('2d');
+		context.font = '30pt Arial';
+		context.fillStyle= 'black';
+	    context.fillText("Active users", 50, 30);
+			console.log("this is the usersLoginArray in drawCanvas2"+ users); //note i declared as var
+
+
+			for(var i=0; i<users.length; i++){
+
+				var data = users[i];
+
+				context.fillText(data.word, data.x, data.y);
+	            context.strokeText(data.word, data.x, data.y);
+
+		}
+
+}
 function handleMouseDown(e){
 
 	//get mouse location relative to canvas top left
@@ -228,16 +255,48 @@ function handleSubmitButton() {
 			//songTitle = responseObj.text;
 			//replace word array with new words if there are any
 			if(responseObj.wordArray) words = responseObj.wordArray;
+			drawCanvas();
+			drawCanvas2();
 			});
 
 	}
-drawCanvas();
+
 }
 
-function handleDeleteButton(){
+
+function handleLoginButton() {
 	// the next word user choose
-	
-}
+
+  var loginName = document.getElementById('loginTextField').value;
+  var loginTestField = document.getElementById('loginTextField');
+  if(loginTestField &&loginName !=""){
+    var userRequestObj = {text2: loginName};
+		       var userRequestJSON = JSON.stringify(userRequestObj);
+		       document.getElementById('loginTextField').value = "";
+		       console.log(loginName);}
+  var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://127.0.0.1:3000');
+    xhr.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    console.log(this);
+    var responseObj= JSON.parse(xhr.responseText);
+		console.log(responseObj.wordArray);
+
+    if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
+		drawCanvas2();
+
+
+  }
+};
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(userRequestJSON);
+		drawCanvas2();
+	}
+
+
+
+
 
 
 
