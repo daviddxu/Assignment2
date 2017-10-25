@@ -6,6 +6,8 @@ var fs = require('fs');
 //words that contain user input
 wordArray = [];
 
+userLoginArray =[];
+
 var http = require('http'); //need to http
 var url = require('url');  //to parse url strings
 
@@ -73,9 +75,12 @@ http.createServer(function (request,response){
            console.log('received data object: ', dataObj);
            console.log('type: ', typeof dataObj);
 
-          wordArray.push({word:dataObj.text,x:20,y:20});
+          if (dataObj.text) wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+
+          if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50,y:50})
            returnObj = {};
            returnObj.wordArray =wordArray;
+           returnObj.userLoginArray=userLoginArray;
 
 
 
