@@ -314,7 +314,7 @@ function handleLoginButton() {
 
 	function pollingTimerHandler() {
 	  //console.log("poll server");
-	  var dataObj = { word:"Poller",x: 30, y:300 }; //used by server to react as poll
+	  var dataObj = { text:"" }; //used by server to react as poll
 	  //create a JSON string representation of the data object
 	  var jsonString = JSON.stringify(dataObj);
 
@@ -426,7 +426,7 @@ $(document).ready(function(){
 	$(document).keydown(handleKeyDown);
 	$(document).keyup(handleKeyUp);
 
-	  pollingTimer = setInterval(pollingTimerHandler, 1); 
+	  pollingTimer = setInterval(pollingTimerHandler, 1000);
 
 
     //timer.clearInterval(); //to stop
