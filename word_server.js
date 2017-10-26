@@ -75,7 +75,20 @@ http.createServer(function (request,response){
            console.log('received data object: ', dataObj);
            console.log('type: ', typeof dataObj);
 
-          if (dataObj.text) wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+           //search through array for word
+           var isWordAlready = false;
+           for (var i =0; i< wordArray.length; i++){
+
+             //update new position
+             if (wordArray[i].word==dataObj.word){
+               wordArray[i].x = dataObj.x;
+               wordArray[i].y=dataObj.y;
+               isWordAlready= true;
+             }
+           }
+            if (!isWordAlready){
+            wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+          }
 
           if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50,y:50})
            returnObj = {};
