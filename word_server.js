@@ -87,7 +87,12 @@ http.createServer(function (request,response){
              }
            }
             if (!isWordAlready){
-            wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+              if(dataObj.text ==""){/*do nothing*/ }
+              else{
+                wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+                }
+
+
           }
 
           if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50,y:50})
@@ -128,4 +133,3 @@ http.createServer(function (request,response){
  }).listen(3000);
 
 console.log('Server Running at http://127.0.0.1:3000  CNTL-C to quit');
-
