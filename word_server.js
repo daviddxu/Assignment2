@@ -1,82 +1,17 @@
+dataObj);
 
-//Server Code
-//import fs  to read and writeTOFile
-var fs = require('fs');
-
-//words that contain user input
-wordArray = [];
-
-userLoginArray =[];
-
-var http = require('http'); //need to http
-var url = require('url');  //to parse url strings
-
-var counter = 1000; //to count invocations of function(req,res)
-
-
-var ROOT_DIR = 'html'; //dir to serve static files from
-
-var MIME_TYPES = {
-    'css': 'text/css',
-    'gif': 'image/gif',
-    'htm': 'text/html',
-    'html': 'text/html',
-    'ico': 'image/x-icon',
-    'jpeg': 'image/jpeg',
-    'jpg': 'image/jpeg',
-    'js': 'text/javascript', //should really be application/javascript
-    'json': 'application/json',
-    'png': 'image/png',
-    'txt': 'text/plain'
-};
-
-var get_mime = function(filename) {
-    var ext, type;
-    for (ext in MIME_TYPES) {
-        type = MIME_TYPES[ext];
-        if (filename.indexOf(ext, filename.length - ext.length) !== -1) {
-            return type;
-        }
-    }
-    return MIME_TYPES['txt'];
-};
-
-// get user song title
-
-
-function update_file(updated_array){
-
-
-}
-
-//creating th server
-http.createServer(function (request,response){
-     var urlObj = url.parse(request.url, true, false);
-     console.log('\n============================');
-	 console.log("PATHNAME: " + urlObj.pathname);
-     console.log("REQUEST: " + ROOT_DIR + urlObj.pathname);
-     console.log("METHOD: " + request.method);
-
-     var receivedData = '';
-
-     //attached event handlers to collect the message data
-     request.on('data', function(chunk) {
-        receivedData += chunk;
-     });
-
-	 //event handler for the end of the message
-     request.on('end', function(){
-        console.log('received data: ', receivedData);
-        console.log('type: ', typeof receivedData);
-
-		//if it is a POST request then echo back the data.
-		if(request.method == "POST"){
-		   var dataObj = JSON.parse(receivedData);
-           console.log('received data object: ', dataObj);
-           console.log('type: ', typeof dataObj);
-
-          if (dataObj.text) wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
-
+          if (dataObj.text){ 
+		 var flag = 0;
+		for(i in wordArray){
+			if(wordArray[i] == dataObj.text){//word is already in array
+				wordArray[i].x = dataObj.x;
+				wordArray[i].y = dataObj.y;
+				flag = 1;
+			}
+		}
+		if(flag == 0){//word not already in array
+		  wordArray.push({word:dataObj.text,x:dataObj.x,y:dataObj.y});}
+		  }
           if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50,y:50})
            returnObj = {};
            returnObj.wordArray =wordArray;
