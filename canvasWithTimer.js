@@ -6,9 +6,6 @@ var words = [];
 var users=[];
 
 
-
-
-
 //indended for keyboard control
 
 
@@ -142,6 +139,22 @@ function handleMouseMove(e){
 
 	wordBeingMoved.x = canvasX + deltaX;
 	wordBeingMoved.y = canvasY + deltaY;
+	var movedWord = JSON.stringify(wordBeingMoved);
+	$.post("userText", movedWord, function(data, status){
+	 console.log("data: " + data);
+	 console.log("typeof: " + typeof data);
+	 var responseObj = JSON.parse(data);
+	 songTitle = responseObj.title;
+	 console.log("Song title: " + songTitle);
+
+	 //songTitle = responseObj.text;
+	 //replace word array with new words if there are any
+	 if(responseObj.wordArray) words = responseObj.wordArray;
+	 drawCanvas();
+	 drawCanvas2();
+	 });
+
+
 
 	e.stopPropagation();
 
@@ -239,6 +252,8 @@ function handleSubmitButton() {
 		var userRequestObj = {text: userText}; //make object to send to server
 		userRequestObj.text = userText;
 		userRequestObj.type = "submit";
+		userRequestObj.x = Math.round(Math.random()*150);
+		userRequestObj.y =  Math.round(Math.random()*150);
 		var userRequestJSON = JSON.stringify(userRequestObj); //make json string
 	   $('#userTextField').val(''); //clear the user text field
 
@@ -291,7 +306,7 @@ function handleLoginButton() {
     xhr.withCredentials = true;
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(userRequestJSON);
-		drawCanvas2();
+
 	}
 
 
