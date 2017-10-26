@@ -6,6 +6,9 @@ var words = [];
 var users=[];
 
 
+
+
+
 //indended for keyboard control
 
 
@@ -309,6 +312,26 @@ function handleLoginButton() {
 
 	}
 
+	function pollingTimerHandler() {
+	  //console.log("poll server");
+	  var dataObj = { word:"Poller",x: 30, y:300 }; //used by server to react as poll
+	  //create a JSON string representation of the data object
+	  var jsonString = JSON.stringify(dataObj);
+
+	  //Poll the server for the location of the moving box
+	  $.post("positionData", jsonString, function(data, status) {
+	    console.log("data: " + data);
+	    console.log("typeof: " + typeof data);
+			console.log("i am the poller");
+
+
+	    var responseObj = JSON.parse(data);
+
+			if(responseObj.wordArray) words = responseObj.wordArray;
+			drawCanvas();
+
+	  });
+	}
 
 
 
@@ -402,6 +425,8 @@ $(document).ready(function(){
 	//add key handler for the document as a whole, not separate elements.
 	$(document).keydown(handleKeyDown);
 	$(document).keyup(handleKeyUp);
+
+	  pollingTimer = setInterval(pollingTimerHandler, 1); 
 
 
     //timer.clearInterval(); //to stop
