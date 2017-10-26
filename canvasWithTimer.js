@@ -83,6 +83,9 @@ var drawCanvas = function(){
 
 var drawCanvas2 = function(){
 
+		var x = 80;
+		var y = 80;
+		
 		var context = canvas2.getContext('2d');
 		context.font = '30pt Arial';
 		context.fillStyle= 'black';
@@ -94,8 +97,11 @@ var drawCanvas2 = function(){
 
 				var data = users[i];
 
-				context.fillText(data.word, data.x, data.y);
-	            context.strokeText(data.word, data.x, data.y);
+				context.fillText(data.word, x, y);
+	            context.strokeText(data.word, x, y);
+				
+				//x+=20;
+				y+=30;
 
 		}
 
@@ -327,8 +333,16 @@ function handleLoginButton() {
 
 	    var responseObj = JSON.parse(data);
 
-			if(responseObj.wordArray) words = responseObj.wordArray;
+			if(responseObj.wordArray){
+				words = responseObj.wordArray;
+				
+			}
+			
+			if(responseObj.userLoginArray){
+				users = responseObj.userLoginArray;
+ 			}
 			drawCanvas();
+			drawCanvas2();
 
 	  });
 	}
