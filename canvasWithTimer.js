@@ -432,4 +432,5 @@ $(document).ready(function(){
     //timer.clearInterval(); //to stop
 
 	drawCanvas();
+	
 });
