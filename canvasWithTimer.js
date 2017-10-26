@@ -17,6 +17,9 @@ var timer;
 
 var wordBeingMoved;
 var songTitle;
+var rect;
+var canvasX;
+var canvasY;
 
 var deltaX, deltaY; //location where mouse is pressed
 var canvas = document.getElementById('canvas1'); //our drawing canvas
@@ -96,18 +99,18 @@ var drawCanvas2 = function(){
 
 				context.fillText(data.word, data.x, data.y);
 	            context.strokeText(data.word, data.x, data.y);
-
+ 
 		}
 
 }
 function handleMouseDown(e){
 
 	//get mouse location relative to canvas top left
-	var rect = canvas.getBoundingClientRect();
+	rect = canvas.getBoundingClientRect();
     //var canvasX = e.clientX - rect.left;
     //var canvasY = e.clientY - rect.top;
-    var canvasX = e.pageX - rect.left; //use jQuery event object pageX and pageY
-    var canvasY = e.pageY - rect.top;
+    canvasX = e.pageX - rect.left; //use jQuery event object pageX and pageY
+    canvasY = e.pageY - rect.top;
 	console.log("mouse down:" + canvasX + ", " + canvasY);
 
 	wordBeingMoved = getWordAtLocation(canvasX, canvasY);
@@ -136,13 +139,24 @@ function handleMouseMove(e){
 	console.log("mouse move");
 
 	//get mouse location relative to canvas top left
-	var rect = canvas.getBoundingClientRect();
-    var canvasX = e.pageX - rect.left;
-    var canvasY = e.pageY - rect.top;
+	rect = canvas.getBoundingClientRect();
+    canvasX = e.pageX - rect.left;
+    canvasY = e.pageY - rect.top;
 
 	wordBeingMoved.x = canvasX + deltaX;
 	wordBeingMoved.y = canvasY + deltaY;
 
+	var dataObj = {text: wordBeingMoved, x: wordBeingMoved.x, y: wordBeingMoved.y};
+	
+	var jsonString = JSON.stringify(dataObj);
+
+	$.post("word", jsonString, function(data, status){
+	console.log("data: " + data);
+	console.log("typeof: " + typeof data);	
+	var responseObj = JSON.parse(data);
+	if(responseObj.wordArray) words = responseObj.wordArray;
+
+	} );
 	e.stopPropagation();
 
 	drawCanvas();
@@ -152,6 +166,7 @@ function handleMouseUp(e){
 	console.log("mouse up");
 
 	e.stopPropagation();
+	
 
     //$("#canvas1").off(); //remove all event handlers from canvas
     //$("#canvas1").mousedown(handleMouseDown); //add mouse down handler
@@ -236,7 +251,7 @@ function handleSubmitButton() {
     var userText = $('#userTextField').val(); //get text from user text input field
 	if(userText && userText != ''){
 	   //user text was not empty
-		var userRequestObj = {text: userText}; //make object to send to server
+		var userRequestObj = {text: userText, x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)}; //make object to send to server
 		userRequestObj.text = userText;
 		userRequestObj.type = "submit";
 		var userRequestJSON = JSON.stringify(userRequestObj); //make json string
@@ -281,7 +296,7 @@ function handleLoginButton() {
     console.log(this);
     var responseObj= JSON.parse(xhr.responseText);
 		console.log(responseObj.wordArray);
-
+ 
     if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
 		drawCanvas2();
 
