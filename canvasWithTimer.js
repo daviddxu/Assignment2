@@ -83,8 +83,8 @@ var drawCanvas = function(){
 
 var drawCanvas2 = function(){
 
-		var x = 80;
-		var y = 0;
+		var x = 100;
+		var y = 70;
 
 		var context = canvas2.getContext('2d');
 		context.font = '30pt Arial';
@@ -321,6 +321,15 @@ function handleLoginButton() {
 
 	}
 
+	
+	function handleLogoutButton(){
+		
+		//send POST request of username to be removed from the server's array
+	
+			var submitButton = document.getElementById('submitButton').disabled =true;
+
+		
+	}
 	function pollingTimerHandler() {
 	  //console.log("poll server");
 	  var dataObj = { text:"" }; //used by server to react as poll
