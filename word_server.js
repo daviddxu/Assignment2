@@ -91,13 +91,41 @@ http.createServer(function (request,response){
               else{
                 wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
                 }
+
+
           }
 
-
-          if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50*userLoginArray.length,y:50*userLoginArray.length})
+          if(dataObj.text2){ userLoginArray.push({word:dataObj.text2,x:50,y:50})}
+		  
+		  
+		  if(dataObj.text3){
+			  console.log("THIS RAN");
+			  console.log("dataObj.text3: ", dataObj.text3);
+			  for(var i = 0; i < userLoginArray.length; i++){
+				  if(userLoginArray[i].word == dataObj.text3){
+					  console.log("index: ", i);
+					  userLoginArray.splice(i, 1);
+				  }
+				  
+				  
+			  }			 
+			 /* var index = userLoginArray.indexOf(dataObj.text3);		
+			  console.log("index: ", index);
+			  if (index > -1){
+				  userLoginArray.splice(index, 1);
+			  }*/
+			  
+			 
+			  
+			
+		
+		 }
            returnObj = {};
            returnObj.wordArray =wordArray;
            returnObj.userLoginArray=userLoginArray;
+
+
+
 
 		   //object to return to client
           response.writeHead(200, {'Content-Type': MIME_TYPES['text']});  //does not work with application/json MIME
