@@ -85,7 +85,7 @@ var drawCanvas2 = function(){
 
 		var x = 80;
 		var y = 0;
-		
+
 		var context = canvas2.getContext('2d');
 		context.font = '30pt Arial';
 		context.fillStyle= 'black';
@@ -99,7 +99,7 @@ var drawCanvas2 = function(){
 
 				context.fillText(data.word, x, y);
 	            context.strokeText(data.word, x, y);
-				
+
 				//x+=20;
 				y+=30;
 
@@ -307,8 +307,7 @@ function handleLoginButton() {
 		console.log(responseObj.wordArray);
 
     if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
-		var submitButton = document.getElementById('submitButton');
-		submitButton.addEventListener("click","handleSubmitButton()", true);
+		var submitButton = document.getElementById('submitButton').disabled =false;
 		drawCanvas2();
 
 
@@ -432,9 +431,12 @@ $(document).ready(function(){
 	//add mouse down listener to our canvas object
 	$("#canvas1").mousedown(handleMouseDown);
 
+	var submitButton = document.getElementById('submitButton').disabled =true;
+
+
 	//add key handler for the document as a whole, not separate elements.
 
-	
+
 	$(document).keydown(handleKeyDown);
 	$(document).keyup(handleKeyUp);
 
