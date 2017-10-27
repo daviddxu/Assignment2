@@ -17,7 +17,7 @@ var timer;
 
 var wordBeingMoved;
 var songTitle;
-
+var loginName;
 var deltaX, deltaY; //location where mouse is pressed
 var canvas = document.getElementById('canvas1'); //our drawing canvas
 var canvas2 = document.getElementById('canvas2'); //display active users
@@ -83,10 +83,11 @@ var drawCanvas = function(){
 
 var drawCanvas2 = function(){
 
-		var x = 80;
-		var y = 0;
+		var x = 100;
+		var y = 70;
 
 		var context = canvas2.getContext('2d');
+		context.clearRect(0, 0, canvas2.width, canvas2.height);
 		context.font = '30pt Arial';
 		context.fillStyle= 'black';
 	    context.fillText("Active users", 50, 30);
@@ -291,7 +292,7 @@ function handleSubmitButton() {
 function handleLoginButton() {
 	// the next word user choose
 
-  var loginName = document.getElementById('loginTextField').value;
+   loginName = document.getElementById('loginTextField').value;
   var loginTestField = document.getElementById('loginTextField');
   if(loginTestField &&loginName !=""){
     var userRequestObj = {text2: loginName};
@@ -308,10 +309,9 @@ function handleLoginButton() {
 
     if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
 		var submitButton = document.getElementById('submitButton').disabled =false;
+		var loginButton = document.getElementById('loginButton').disabled =true;
+
 		drawCanvas2();
-
-
-
 
   }
 };
@@ -321,6 +321,45 @@ function handleLoginButton() {
 
 	}
 
+	
+	function handleLogoutButton(){
+		
+		//send POST request of username to be removed from the server's array
+		//console.log("loginName: ", loginName);
+		var userRequestObj = {text3: loginName};
+		console.log("userRequestObj: ", userRequestObj);
+		var userRequestJSON = JSON.stringify(userRequestObj);
+		
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://127.0.0.1:3000');
+	    xhr.onreadystatechange = function() {
+
+    	if (this.readyState == 4 && this.status == 200) {
+				console.log(this);
+        var responseObj= JSON.parse(xhr.responseText);
+		console.log(responseObj.wordArray);
+ 
+		if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
+		console.log(users);
+	//	var submitButton = document.getElementById('submitButton').disabled =false;
+//		drawCanvas2();
+
+		  }
+
+
+		};
+		
+		    xhr.withCredentials = true;
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.send(userRequestJSON);
+
+			var submitButton = document.getElementById('submitButton').disabled =true;
+			var loginButton = document.getElementById('loginButton').disabled =false;
+
+			drawCanvas2();
+
+		
+	}
 	function pollingTimerHandler() {
 	  //console.log("poll server");
 	  var dataObj = { text:"" }; //used by server to react as poll
