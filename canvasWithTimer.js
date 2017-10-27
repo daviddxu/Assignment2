@@ -301,7 +301,11 @@ function handleLoginButton() {
 		console.log(responseObj.wordArray);
 
     if ((responseObj.userLoginArray)) users = responseObj.userLoginArray;
+		var submitButton = document.getElementById('submitButton');
+		submitButton.addEventListener("click","handleSubmitButton()", true);
 		drawCanvas2();
+
+
 
 
   }
@@ -423,14 +427,15 @@ $(document).ready(function(){
 	$("#canvas1").mousedown(handleMouseDown);
 
 	//add key handler for the document as a whole, not separate elements.
+
+	
 	$(document).keydown(handleKeyDown);
 	$(document).keyup(handleKeyUp);
 
-	  pollingTimer = setInterval(pollingTimerHandler, 1000);
+	 pollingTimer = setInterval(pollingTimerHandler, 1000);
 
 
     //timer.clearInterval(); //to stop
 
 	drawCanvas();
-	
 });
