@@ -91,18 +91,13 @@ http.createServer(function (request,response){
               else{
                 wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
                 }
-
-
           }
 
-          if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50,y:50})
+
+          if(dataObj.text2) userLoginArray.push({word:dataObj.text2,x:50*userLoginArray.length,y:50*userLoginArray.length})
            returnObj = {};
            returnObj.wordArray =wordArray;
            returnObj.userLoginArray=userLoginArray;
-
-
-
-
 
 		   //object to return to client
           response.writeHead(200, {'Content-Type': MIME_TYPES['text']});  //does not work with application/json MIME
