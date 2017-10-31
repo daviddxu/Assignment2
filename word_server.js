@@ -89,7 +89,13 @@ http.createServer(function (request,response){
             if (!isWordAlready){
               if(dataObj.text =="" || dataObj.text == null){/*do nothing*/ }
               else{
-                wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
+				  
+				var coordinate = require("./randomNumGen.js");
+				
+				wordArray.push({word:dataObj.text,x:Math.round(coordinate.randomNumGen()),y:Math.round(coordinate.randomNumGen())});
+
+				
+				// wordArray.push({word:dataObj.text,x:Math.round(Math.random()*150),y:Math.round(Math.random()*150)});
                 }
 
 
